@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice</title>
+    <style>
+        @font-face {
+            font-family: "WorkSans";
+            font-style: normal;
+            src: url("/fonts/WorkSans.ttf");
+        }
+
+        body {
+            font-family: 'WorkSans', sans-serif;
+            font-size: 12px;
+            color: #555;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        .invoice-box {
+            max-width: 800px;
+            margin: auto;
+            padding: 30px;
+            border: 1px solid #eee;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+            background-color: #fff;
+        }
+
+        .invoice-box table {
+            width: 100%;
+            line-height: inherit;
+            text-align: left;
+            border-collapse: collapse; /* Important for border handling */
+        }
+
+        .invoice-box table td {
+            padding: 5px;
+            vertical-align: top;
+        }
+
+        .invoice-box table tr td:nth-child(2) {
+            /* Adjust if you have more columns needing right alignment */
+            text-align: right;
+        }
+
+        .invoice-box table tr.top table td {
+            padding-bottom: 20px;
+        }
+
+        .invoice-box table tr.top table td.title {
+            font-size: 45px;
+            line-height: 45px;
+            color: #333;
+        }
+
+        /* Logo styling - adjust size as needed */
+        .invoice-box .logo {
+            max-width: 150px; /* Control logo width */
+            max-height: 100px; /* Control logo height */
+            width: auto;
+            height: auto;
+        }
+
+
+        .invoice-box table tr.information table td {
+            padding-bottom: 40px;
+        }
+
+        .invoice-box table tr.heading td {
+            background: #eee;
+            border-bottom: 1px solid #ddd;
+            font-weight: bold;
+            text-align: left; /* Explicitly set text-align for headings */
+        }
+
+        /* Make specific heading cells align right */
+        .invoice-box table tr.heading td.col-number {
+            text-align: right;
+        }
+
+
+        .invoice-box table tr.details td {
+            padding-bottom: 20px;
+        }
+
+        .invoice-box table tr.item td {
+            border-bottom: 1px solid #eee;
+            text-align: left; /* Default text align for item rows */
+        }
+
+        /* Make specific item cells align right */
+        .invoice-box table tr.item td.col-number {
+            text-align: right;
+        }
+
+
+        .invoice-box table tr.item.last td {
+            border-bottom: none;
+        }
+
+        .invoice-box table tr.total td {
+            border-top: 2px solid #eee;
+            font-weight: bold;
+            text-align: right; /* Totals typically align right */
+        }
+
+        /* Align the first cell (label) in the total section to the left */
+        .invoice-box table tr.total td:first-child {
+            text-align: left;
+            border-top: none; /* Remove top border if it looks odd */
+        }
+
+
+        /* Utility Classes */
+        .text-right {
+            text-align: right;
+        }
+
+        .text-left {
+            text-align: left;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        strong, .invoice-box table tr.heading td {
+            font-weight: bold;
+        }
+
+        /* Responsive adjustments - less critical for PDF but good practice */
+        @media only screen and (max-width: 600px) {
+            .invoice-box table tr.top table td {
+                width: 100%;
+                display: block;
+                text-align: center;
+            }
+
+            .invoice-box table tr.information table td {
+                width: 100%;
+                display: block;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="invoice-box">
+    <table cellpadding="0" cellspacing="0">
+        <tr class="top">
+            <td colspan="4">
+                <table>
+                    <tr>
+                        <td class="title">
+                            <h1>Acme</h1>
+                        </td>
+
+                        <td class="text-right">
+                            Invoice #: 123<br>
+                            Created: April 9, 2025<br>
+                            Due: May 9, 2025
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+        <tr class="information">
+            <td colspan="4">
+                <table>
+                    <tr>
+                        <td>
+                            Your Company Name<br>
+                            123 Your Street<br>
+                            Your City, State, 12345<br>
+                            contact@yourcompany.com
+                        </td>
+
+                        <td class="text-right">
+                            Customer Company Inc.<br>
+                            John Doe<br>
+                            456 Customer Avenue<br>
+                            Client City, CA 90210<br>
+                            john.doe@customer.com
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+        <tr class="heading">
+            <td>Payment Method</td>
+            <td colspan="3" class="text-right">Check #</td>
+        </tr>
+
+        <tr class="details">
+            <td>Bank Transfer</td>
+            <td colspan="3" class="text-right">1000</td>
+        </tr>
+
+        <tr class="heading">
+            <td>Item</td>
+            <td class="text-left">Description</td>
+            <td class="col-number">Quantity</td>
+            <td class="col-number">Price</td>
+        </tr>
+
+        <tr class="item">
+            <td>Website Design</td>
+            <td>Initial design phase</td>
+            <td class="col-number">1</td>
+            <td class="col-number">$1,500.00</td>
+        </tr>
+
+        <tr class="item">
+            <td>Hosting (1 year)</td>
+            <td>Basic Plan</td>
+            <td class="col-number">1</td>
+            <td class="col-number">$100.00</td>
+        </tr>
+
+        <tr class="item last">
+            <td>Support Retainer</td>
+            <td>Monthly support (April)</td>
+            <td class="col-number">1</td>
+            <td class="col-number">$300.00</td>
+        </tr>
+
+        <tr class="total">
+            <td colspan="2"></td>
+            <td>Subtotal:</td>
+            <td class="col-number">$1,900.00</td>
+        </tr>
+        <tr class="total">
+            <td colspan="2"></td>
+            <td>Tax (10%):</td>
+            <td class="col-number">$190.00</td>
+        </tr>
+        <tr class="total">
+            <td colspan="2"></td>
+            <td><strong>Grand Total:</strong></td>
+            <td class="col-number"><strong>$2,090.00</strong></td>
+        </tr>
+        <tr>
+            <td colspan="4" style="padding-top: 30px;">
+                <strong>Notes:</strong><br>
+                Thank you for your business! Payment is due within 30 days.<br>
+                Please include the invoice number on your payment.
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>
