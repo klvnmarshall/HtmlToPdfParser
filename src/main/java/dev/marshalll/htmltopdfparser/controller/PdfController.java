@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+
 @RestController
 @RequestMapping("/download")
 public class PdfController {
@@ -16,7 +18,7 @@ public class PdfController {
 
 
     @GetMapping("/pdf")
-    public ResponseEntity<byte[]> downloadPDF(HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity<byte[]> downloadPDF(HttpServletRequest request, HttpServletResponse response) throws IOException {
         return pdfService.downloadPDF(request, response);
     }
 }

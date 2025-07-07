@@ -2,7 +2,9 @@ package dev.marshalll.htmltopdfparser.service.impl;
 
 import com.itextpdf.html2pdf.ConverterProperties;
 import com.itextpdf.html2pdf.HtmlConverter;
+import com.itextpdf.io.font.FontProgramFactory;
 import com.itextpdf.io.source.ByteArrayOutputStream;
+import com.itextpdf.layout.font.FontProvider;
 import dev.marshalll.htmltopdfparser.service.PdfService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -16,6 +18,8 @@ import org.thymeleaf.context.WebContext;
 import org.thymeleaf.web.IWebExchange;
 import org.thymeleaf.web.servlet.JakartaServletWebApplication;
 
+import java.io.IOException;
+
 
 @Service
 public class PdfServiceImpl implements PdfService {
@@ -28,7 +32,7 @@ public class PdfServiceImpl implements PdfService {
     }
 
     @Override
-    public ResponseEntity<byte[]> downloadPDF(HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity<byte[]> downloadPDF(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         JakartaServletWebApplication application = JakartaServletWebApplication.buildApplication(request.getServletContext());
         IWebExchange exchange = application.buildExchange(request, response);
@@ -38,7 +42,16 @@ public class PdfServiceImpl implements PdfService {
 
         ByteArrayOutputStream target = new ByteArrayOutputStream();
         ConverterProperties converterProperties = new ConverterProperties();
+        var fontProvider = new FontProvider();
         converterProperties.setBaseUri("http://localhost:8080");
+
+        ClassLoader classLoader = getClass().getClassLoader();
+
+        final var fontStream = classLoader.getResourceAsStream("static/fonts/WorkSans.ttf");
+
+        var fontProgram = FontProgramFactory.createFont(fontStream.readAllBytes());
+        fontProvider.addFont(fontProgram);
+        converterProperties.setFontProvider(fontProvider);
 
         HtmlConverter.convertToPdf(invoiceTemplate, target, converterProperties);
 
