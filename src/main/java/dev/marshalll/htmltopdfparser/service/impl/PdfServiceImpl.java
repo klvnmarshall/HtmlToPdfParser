@@ -19,6 +19,7 @@ import org.thymeleaf.web.IWebExchange;
 import org.thymeleaf.web.servlet.JakartaServletWebApplication;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 
 @Service
@@ -46,11 +47,18 @@ public class PdfServiceImpl implements PdfService {
         converterProperties.setBaseUri("http://localhost:8080");
 
         ClassLoader classLoader = getClass().getClassLoader();
+        final String[] FONTS = {
+                "static/fonts/WorkSans-Bold.ttf",
+                "static/fonts/WorkSans-Regular.ttf",
+                "static/fonts/WorkSans-SemiBold.ttf",
+        };
 
-        final var fontStream = classLoader.getResourceAsStream("static/fonts/WorkSans.ttf");
+        for(String font: FONTS) {
+            final var fontStream = classLoader.getResourceAsStream(font);
+            var fontProgram = FontProgramFactory.createFont(fontStream.readAllBytes());
+            fontProvider.addFont(fontProgram);
+        }
 
-        var fontProgram = FontProgramFactory.createFont(fontStream.readAllBytes());
-        fontProvider.addFont(fontProgram);
         converterProperties.setFontProvider(fontProvider);
 
         HtmlConverter.convertToPdf(invoiceTemplate, target, converterProperties);
